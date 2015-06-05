@@ -11,7 +11,7 @@ import java.util.Map;
  * @author Ravdeep Sandhu
  * 
  */
-public class SimpleWorkBookHelper
+public class SupportUtils
 {
 
 	/**
@@ -23,9 +23,9 @@ public class SimpleWorkBookHelper
 	 *            The number of batches this workbook should be split in
 	 * @return
 	 */
-	public static List<SimpleWorkBook> splitIntoBatches (SimpleWorkBook wb, int numberOfBatches)
+	public static List<ExcelWorkbookWrapper> splitIntoBatches (ExcelWorkbookWrapper wb, int numberOfBatches)
 	{
-		List<SimpleWorkBook> books = new ArrayList<SimpleWorkBook> ();
+		List<ExcelWorkbookWrapper> books = new ArrayList<ExcelWorkbookWrapper> ();
 		int totalRows = wb.getNumberOfRowsExcludingHeader();// 56
 		int batchSize = totalRows / numberOfBatches; // 56/10= 5
 		int lastBatchSize = totalRows % numberOfBatches;// 6
@@ -35,13 +35,13 @@ public class SimpleWorkBookHelper
 		}
 		else
 		{
-			SimpleRow header = wb.getHeaderRow ();
+			ExcelRow header = wb.getHeaderRow ();
 			int start = 2;
 			int end = (start + batchSize) - 1;
 			for (int i = 1; i < numberOfBatches; i++)
 			{
-				Map<Integer, SimpleRow> rowMap = wb.getRowsInRange (start, end); // 2,11
-				SimpleWorkBook book = new SimpleWorkBook ();
+				Map<Integer, ExcelRow> rowMap = wb.getRowsInRange (start, end); // 2,11
+				ExcelWorkbookWrapper book = new ExcelWorkbookWrapper ();
 				book.setHeaderRow (header);
 				book.setSheetName (wb.getSheetName ());
 				book.setRowMap (rowMap);
@@ -52,8 +52,8 @@ public class SimpleWorkBookHelper
 			if (lastBatchSize != 0)
 			{
 				end = (start + lastBatchSize) - 1;
-				Map<Integer, SimpleRow> rowMap = wb.getRowsInRange (start, end);
-				SimpleWorkBook book = new SimpleWorkBook ();
+				Map<Integer, ExcelRow> rowMap = wb.getRowsInRange (start, end);
+				ExcelWorkbookWrapper book = new ExcelWorkbookWrapper ();
 				book.setHeaderRow (header);
 				book.setSheetName (wb.getSheetName ());
 				book.setRowMap (rowMap);
@@ -63,13 +63,13 @@ public class SimpleWorkBookHelper
 		return books;
 	}
 
-	public static <T> Map<Integer, SimpleRow> buildRowMap (Collection<T> objs, SimpleRowTransformer<T> t, SimpleRow headerRow)
+	public static <T> Map<Integer, ExcelRow> buildRowMap (Collection<T> objs, RowTransformer<T> t, ExcelRow headerRow)
 	{
-		Map<Integer, SimpleRow> rowMap = new LinkedHashMap<Integer, SimpleRow> ();
+		Map<Integer, ExcelRow> rowMap = new LinkedHashMap<Integer, ExcelRow> ();
 		Integer i = 1;
 		for (T obj : objs)
 		{
-			SimpleRow sr = t.transform (obj, headerRow);
+			ExcelRow sr = t.transform (obj, headerRow);
 			sr.setRowNum (i);
 			rowMap.put (i++, sr);
 		}

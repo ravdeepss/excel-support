@@ -17,8 +17,8 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
-import com.excelsupport.SimpleRow;
-import com.excelsupport.SimpleWorkBook;
+import com.excelsupport.ExcelRow;
+import com.excelsupport.ExcelWorkbookWrapper;
 
 public class ExcelWriter implements Writer
 {
@@ -33,7 +33,7 @@ public class ExcelWriter implements Writer
 	}
 
 	@Override
-	public void write (SimpleWorkBook swb) throws IOException
+	public void write (ExcelWorkbookWrapper swb) throws IOException
 	{
 
 		HSSFWorkbook workBook = writeAllRowsExcludingHeader (swb);
@@ -48,7 +48,7 @@ public class ExcelWriter implements Writer
 	/**
 	 * @param workBook
 	 */
-	private HSSFWorkbook writeAllRowsExcludingHeader (SimpleWorkBook swb)
+	private HSSFWorkbook writeAllRowsExcludingHeader (ExcelWorkbookWrapper swb)
 	{
 		POIFSFileSystem fileSystem = null;
 		HSSFWorkbook workBook = null;
@@ -58,8 +58,8 @@ public class ExcelWriter implements Writer
 			workBook = new HSSFWorkbook (fileSystem);
 			HSSFSheet sheet = workBook.getSheetAt (0);
 
-			Map<Integer, SimpleRow> rowMap = swb.getRowsInRange (1, swb.getNumberOfRowsExcludingHeader ());
-			for (Entry<Integer, SimpleRow> entry : rowMap.entrySet ())
+			Map<Integer, ExcelRow> rowMap = swb.getRowsInRange (1, swb.getNumberOfRowsExcludingHeader ());
+			for (Entry<Integer, ExcelRow> entry : rowMap.entrySet ())
 			{
 				HSSFRow row = sheet.createRow (entry.getKey ());
 				debug.info ("Row No.: " + row.getRowNum ());
@@ -93,7 +93,7 @@ public class ExcelWriter implements Writer
 		return new POIFSFileSystem (is);
 	}
 
-	private void createHeaderRow (HSSFSheet sheet, SimpleRow headerRow)
+	private void createHeaderRow (HSSFSheet sheet, ExcelRow headerRow)
 	{
 		HSSFRow row = sheet.createRow (0);
 		for (Entry<String, String> entry : headerRow.getCells ().entrySet ())
@@ -104,7 +104,7 @@ public class ExcelWriter implements Writer
 	}
 
 	@Override
-	public void writeRowMap (SimpleWorkBook swb) throws IOException
+	public void writeRowMap (ExcelWorkbookWrapper swb) throws IOException
 	{
 		HSSFWorkbook workBook = writeAllRowsExcludingHeader (swb);
 		if (os == null)
@@ -114,7 +114,7 @@ public class ExcelWriter implements Writer
 		workBook.write (os);
 	}
 
-	private void processRow (HSSFRow row, SimpleRow rowToWrite, SimpleRow headerRow)
+	private void processRow (HSSFRow row, ExcelRow rowToWrite, ExcelRow headerRow)
 	{
 
 		for (Entry<String, String> entry : headerRow.getCells ().entrySet ())

@@ -1,6 +1,6 @@
 package com.excelsupport.reader;
 
-import com.excelsupport.SimpleWorkBook;
+import com.excelsupport.ExcelWorkbookWrapper;
 
 /**
  * 
@@ -11,18 +11,18 @@ public interface Reader
 {
 
 	/**
-	 * Returns a {@link SimpleWorkBook} 
+	 * Returns a {@link ExcelWorkbookWrapper} 
 	 * The Reader is expected to be initialized using the constructor if this method is to be used
 	 * @param file
-	 * @return {@link SimpleWorkBook} 
+	 * @return {@link ExcelWorkbookWrapper} 
 	 */
-	public SimpleWorkBook read ();
+	public ExcelWorkbookWrapper read ();
 
 	/**
-	 * This method will initilize the file object using the filepath provided and return a {@link SimpleWorkBook} object
+	 * This method will initilize the file object using the filepath provided and return a {@link ExcelWorkbookWrapper} object
 	 * @param filePath
-	 * @return {@link SimpleWorkBook}
+	 * @return {@link ExcelWorkbookWrapper}
 	 */
-	public SimpleWorkBook read (String filePath);
+	public ExcelWorkbookWrapper read (String filePath);
 
 }

@@ -8,7 +8,7 @@ import java.util.Map;
  * @author Ravdeep Sandhu
  * 
  */
-public class SimpleRow
+public class ExcelRow
 {
 	private Integer				rowNum;
 	private Map<String, String>	cells;

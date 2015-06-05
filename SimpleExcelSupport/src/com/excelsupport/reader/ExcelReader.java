@@ -20,8 +20,8 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
-import com.excelsupport.SimpleRow;
-import com.excelsupport.SimpleWorkBook;
+import com.excelsupport.ExcelRow;
+import com.excelsupport.ExcelWorkbookWrapper;
 
 /**
  * 
@@ -61,13 +61,13 @@ public class ExcelReader implements Reader
 	}
 
 
-	public SimpleWorkBook read (String filePath)
+	public ExcelWorkbookWrapper read (String filePath)
 	{
 		this.file = new File (filePath);
 		return read ();
 	}
 
-	public SimpleWorkBook read ()
+	public ExcelWorkbookWrapper read ()
 	{
 		if (is == null)
 		{
@@ -82,7 +82,7 @@ public class ExcelReader implements Reader
 				debug.error (e);
 			}
 		}
-		SimpleWorkBook wb = new SimpleWorkBook ();
+		ExcelWorkbookWrapper wb = new ExcelWorkbookWrapper ();
 		POIFSFileSystem fileSystem = null;
 
 		try
@@ -95,11 +95,11 @@ public class ExcelReader implements Reader
 			wb.setSheetName (sheet.getSheetName ());
 			Iterator<Row> rows = sheet.rowIterator ();
 
-			SimpleRow headerRow = createHeaderRow (sheet);
+			ExcelRow headerRow = createHeaderRow (sheet);
 
 			wb.setHeaderRow (headerRow);
 			int lastRow = sheet.getLastRowNum ();
-			Map<Integer, SimpleRow> rowMap = new HashMap<Integer, SimpleRow> ();
+			Map<Integer, ExcelRow> rowMap = new HashMap<Integer, ExcelRow> ();
 
 			for (int i = 1; i <= lastRow; i++)
 			{
@@ -122,12 +122,12 @@ public class ExcelReader implements Reader
 		return wb;
 	}
 
-	private SimpleRow processRow (HSSFRow row, SimpleRow headerRow)
+	private ExcelRow processRow (HSSFRow row, ExcelRow headerRow)
 	{
 
 		// once get a row its time to iterate through cells.
 		Iterator<Cell> cells = row.cellIterator ();
-		SimpleRow sr = new SimpleRow ();
+		ExcelRow sr = new ExcelRow ();
 		sr.setRowNum (row.getRowNum ());
 		sr.setRowName (rowName);
 		Map<String, String> cellMap = new HashMap<String, String> ();
@@ -183,12 +183,12 @@ public class ExcelReader implements Reader
 		return sr;
 	}
 
-	private SimpleRow createHeaderRow (HSSFSheet sheet) throws Exception
+	private ExcelRow createHeaderRow (HSSFSheet sheet) throws Exception
 	{
 		HSSFRow row = sheet.getRow (0);
 
 		Iterator<Cell> cells = row.cellIterator ();
-		SimpleRow sr = new SimpleRow ();
+		ExcelRow sr = new ExcelRow ();
 		sr.setRowNum (row.getRowNum ());
 		Map<String, String> cellMap = new LinkedHashMap<String, String> ();
 

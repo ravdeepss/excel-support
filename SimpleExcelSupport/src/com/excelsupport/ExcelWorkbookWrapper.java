@@ -10,34 +10,34 @@ import java.util.Map;
  * 
  * 
  */
-public class SimpleWorkBook
+public class ExcelWorkbookWrapper
 {
-	private SimpleRow				headerRow;
-	private Map<Integer, SimpleRow>	rowMap;
+	private ExcelRow				headerRow;
+	private Map<Integer, ExcelRow>	rowMap;
 	private String					sheetName;
 
-	public void setHeaderRow (SimpleRow headerRow2)
+	public void setHeaderRow (ExcelRow headerRow2)
 	{
 		this.headerRow = headerRow2;
 
 	}
 
-	public void setRowMap (Map<Integer, SimpleRow> rowMap2)
+	public void setRowMap (Map<Integer, ExcelRow> rowMap2)
 	{
 		this.rowMap = rowMap2;
 
 	}
 
-	public Map<Integer, SimpleRow> getRowsInRange (int start, int end)
+	public Map<Integer, ExcelRow> getRowsInRange (int start, int end)
 	{
 
-		Map<Integer, SimpleRow> retRowMap = new HashMap<Integer, SimpleRow> ();
+		Map<Integer, ExcelRow> retRowMap = new HashMap<Integer, ExcelRow> ();
 
 		if (this.rowMap.containsKey (start) && this.rowMap.containsKey (end))
 		{
 			for (int i = start; i <= end; i++)
 			{
-				SimpleRow sr = this.rowMap.get (i);
+				ExcelRow sr = this.rowMap.get (i);
 				if (sr != null)
 				{
 					retRowMap.put (i, sr);
@@ -64,7 +64,7 @@ public class SimpleWorkBook
 
 		StringBuffer sb = new StringBuffer ();
 		sb.append ("HEADER|" + headerRow.toString ()).append ("\n");
-		for (SimpleRow sr : rowMap.values ())
+		for (ExcelRow sr : rowMap.values ())
 		{
 			sb.append (sr.getRowNum () + "|" + sr.toString ()).append ("\n");
 		}
@@ -76,7 +76,7 @@ public class SimpleWorkBook
 	 * 
 	 * @return The Header Row of the Parsed Spreadsheet
 	 */
-	public SimpleRow getHeaderRow ()
+	public ExcelRow getHeaderRow ()
 	{
 		return headerRow;
 	}
@@ -86,7 +86,7 @@ public class SimpleWorkBook
 		return rowMap.size ();
 	}
 
-	public Collection<SimpleRow> getAllRowsExcludingHeader(){
+	public Collection<ExcelRow> getAllRowsExcludingHeader(){
 		return rowMap.values();
 	}
 	
